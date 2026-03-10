@@ -27,8 +27,8 @@
         .animate-salepage { animation: pulseGlow 2s infinite; }
 
         
-            .bubble-doodle-bot { border-radius: 18px 18px 18px 4px !important; border: 2px solid #111b21; transform: rotate(-1.5deg); }
-            .bubble-doodle-user { border-radius: 18px 18px 4px 18px !important; border: 2px solid #111b21; transform: rotate(1deg); }
+            .bubble-doodle-bot { border-radius: 18px 18px 18px 4px !important; border: 2px solid #53035e; transform: rotate(-1.5deg); }
+            .bubble-doodle-user { border-radius: 18px 18px 4px 18px !important; border: 2px solid #ffffff; transform: rotate(1deg); }
         
 
         /* Modal Styles */
@@ -45,11 +45,11 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#00a884',
-                        'bot-bubble': '#ffffff',
-                        'bot-text': '#111b21',
-                        'user-bubble': '#00a884',
-                        'user-text': '#111b21',
+                        primary: '#7c3aed',
+                        'bot-bubble': '#ededed',
+                        'bot-text': '#53035e',
+                        'user-bubble': '#7c3aed',
+                        'user-text': '#ffffff',
                     }
                 }
             }
@@ -59,7 +59,7 @@
 <body class="flex flex-col h-[100dvh] overflow-hidden">
     
     <!-- HEADER -->
-    <header class="flex-shrink-0 px-4 py-3 shadow-md z-20 flex items-center gap-3" style="background-color: #008069; color: #ffffff;">
+    <header class="flex-shrink-0 px-4 py-3 shadow-md z-20 flex items-center gap-3" style="background-color: #38004d; color: #ffffff;">
         <div class="h-10 w-10 bg-white/20 rounded-full flex items-center justify-center overflow-hidden border border-white/10">
             <img src="https://cdn.jsdelivr.net/gh/rakankongsi/hosting-image@main/Avatar.webp" class="w-full h-full object-cover">
         </div>
@@ -81,9 +81,6 @@
             <!-- Messages injected here -->
             <div class="h-4"></div> <!-- Spacer -->
         </main>
-
-        <!-- QUICK REPLIES (Horizontal Scroll) -->
-        <div id="quick-replies" class="flex-shrink-0 overflow-x-auto whitespace-nowrap px-4 py-2 gap-2 flex hide-scrollbar z-10 min-h-[40px]"></div>
     </div>
 
     <!-- FOOTER INPUT -->
@@ -106,8 +103,12 @@
             <form id="variable-form" class="p-5 space-y-4 overflow-y-auto">
                 
                 <div>
-                    <label class="block text-xs font-bold uppercase tracking-wide opacity-70 mb-1">Nama</label>
-                    <input type="text" name="name" required placeholder="Boleh saya dapatkan nama anda?" class="form-input w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-primary/50 outline-none transition-all">
+                    <label class="block text-xs font-bold uppercase tracking-wide opacity-70 mb-1">Nama Pelanggan</label>
+                    <input type="text" name="name" required placeholder="Boleh saya dapatkan nama penuh anda?" class="form-input w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-primary/50 outline-none transition-all">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wide opacity-70 mb-1">No Telefon</label>
+                    <input type="text" name="phone_number" required placeholder="Boleh kongsikan nombor telefon?" class="form-input w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-primary/50 outline-none transition-all">
                 </div>
                 <button type="submit" class="w-full py-3.5 bg-primary text-white font-bold rounded-xl shadow-lg hover:brightness-110 active:scale-95 transition-all mt-2">HANTAR MAKLUMAT</button>
             </form>
@@ -123,8 +124,8 @@
             </div>
             <div class="overflow-y-auto p-5 space-y-4">
                 
-                <div class="bg-black/5 p-3 rounded-lg text-xs whitespace-pre-wrap border border-black/10 opacity-80">Maybank: (ARG EMPIRE)</div>
-                <div class="flex justify-center"><img src="https://cdn.jsdelivr.net/gh/rakankongsi/hosting-image@main/ARG%20QR.webp" class="max-w-[150px] rounded-lg border shadow-sm"></div>
+                <div class="bg-black/5 p-3 rounded-lg text-xs whitespace-pre-wrap border border-black/10 opacity-80">Maybank: 123456789 (Syarikat Sdn Bhd)</div>
+                
                 
                 <form id="checkout-form-inner" class="space-y-3">
                     <input type="hidden" id="checkout_product_name" name="product" value="">
@@ -155,331 +156,142 @@
     const CONFIG = {
         deploymentType: "static_js",
         enableStaticApi: false,
-        apiKeys: ["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"],
-        model: "llama-3.1-8b-instant",
+        apiKeys: [""],
+        aiProvider: "groq",
+        model: "llama-3.3-70b-versatile",
         botName: "RK Chat",
-        welcomeMessage: "Helo {{name}}, Ada apa-apa yang boleh saya bantu?",
+        welcomeMessage: "Hai {{name}}! Terima kasih kerana menghubungi kami. Ada apa-apa yang boleh saya bantu mengenai produk atau tempahan anda hari ini?",
         variableCollectionStyle: "form",
         variables: [
   {
     "id": 1,
     "variableKey": "name",
-    "label": "Nama",
+    "label": "Nama Pelanggan",
     "enabled": true,
-    "question": "Boleh saya dapatkan nama anda?",
+    "question": "Boleh saya dapatkan nama penuh anda?",
+    "allowMultiple": false
+  },
+  {
+    "id": 3,
+    "variableKey": "phone_number",
+    "label": "No Telefon",
+    "enabled": true,
+    "question": "Boleh kongsikan nombor telefon?",
     "allowMultiple": false
   }
 ],
-        variableIntro: "Hai Assalamualaikum, dan salam sejahtera",
+        variableIntro: "Terima kasih! Sebelum kita teruskan, boleh saya dapatkan sedikit maklumat?",
         introButtons: [
   {
-    "id": 1762353474536,
-    "label": "salepage premium",
-    "url": ""
+    "id": 1773131028004,
+    "label": "salepage premium"
   },
   {
-    "id": 1762353487216,
-    "label": "biolink premium",
-    "url": ""
+    "id": 1773131031097,
+    "label": "biolink premium"
   },
   {
-    "id": 1762353492826,
-    "label": "Chatbot Ai",
-    "url": ""
+    "id": 1773131031352,
+    "label": "Chatbot Ai"
   },
   {
-    "id": 1762353507680,
-    "label": "Servis Design",
-    "url": ""
+    "id": 1773131031626,
+    "label": "Servis Setup Salepage"
   }
 ],
         autoResponderRules: [
   {
-    "id": 1764945300015.6758,
-    "keyword": "berapa harga?",
-    "response": "Harga untuk Salepage Premium Lifetime ni cuma **RM150** sahaja, {{name}}. Bayar sekali, guna sampai bila-bila! 🤩 Memang pelaburan yang sangat berbaloi untuk bisnes anda.\n\n|||\n\nDengan pakej ni, anda boleh dapatkan salepage lifetime anda, belajar bina salepage mudah dan percuma atau dapatkan servis dari kami sekarang! Jimat banyak sangat ni, tak perlu pening fikir yuran bulanan lagi.🚀\n\n|||\n\n\n\n|||",
-    "attachments": [
-      {
-        "id": 1764945300015.913,
-        "url": "https://cdn.jsdelivr.net/gh/rakankongsi/hosting-image@main/salepage-premium.webp"
-      }
-    ],
-    "buttons": [
-      {
-        "id": 1764945292914.4443,
-        "label": "Dapatkan Salepage Premium Lifetime Sekarang!",
-        "url": "https://shop.rakankongsi.com/",
-        "isSalepageLink": true
-      }
-    ]
+    "id": 1773131031627,
+    "keyword": "servis, setup, salepage",
+    "response": "Respons untuk Butang Baru",
+    "attachments": [],
+    "buttons": [],
+    "source": "intro_button",
+    "sourceId": 1773131031626
   },
   {
-    "id": 1764854110150.3457,
-    "keyword": "salepage premium",
-    "response": "Waalaikumussalam dan terima kasih! Nampaknya anda berminat dengan **Salepage Premium Lifetime** kami. 😍\n\nIni adalah solusi 'killer' untuk jimatkan kos marketing anda secara total. Bayangkan, dengan hanya sekali bayaran, anda dapat akses seumur hidup! Tak perlu pening kepala fikir pasal yuran bulanan atau tahunan lagi. Anda boleh belajar bina salepage yang *high-converting* dengan mudah atau dapatkan servis terus dari kami.\n\nPeluang emas macam ni jarang datang selalu. Dapatkan akses sekarang untuk pastikan bisnes anda nampak lebih profesional dan jualan mencanak naik! Jangan tunggu lama-lama, takut harga promosi ni tamat bila-bila masa je. 🔥\n\nHarga: RM150 (Lifetime)\n\n|||\n\n\n\n|||",
-    "attachments": [
-      {
-        "url": "https://cdn.jsdelivr.net/gh/rakankongsi/hosting-image@main/salepage-premium.webp",
-        "id": 1764854110150.951
-      }
-    ],
-    "buttons": [
-      {
-        "id": 1764854110150.2012,
-        "label": "Lihat Salepage Premium Lifetime",
-        "url": "https://shop.rakankongsi.com/",
-        "isSalepageLink": true
-      },
-      {
-        "id": 1764854113339,
-        "label": "Butang Baru",
-        "actionType": "checkout"
-      },
-      {
-        "id": 1764945300015.909,
-        "label": "berapa harga?",
-        "actionType": "url",
-        "triggeredRuleId": 1764945300015.6758
-      }
-    ]
+    "id": 1773131031353,
+    "keyword": "chatbot, ai",
+    "response": "Respons untuk Butang Baru",
+    "attachments": [],
+    "buttons": [],
+    "source": "intro_button",
+    "sourceId": 1773131031352
+  },
+  {
+    "id": 1773131031098,
+    "keyword": "biolink, premium",
+    "response": "Respons untuk Butang Baru",
+    "attachments": [],
+    "buttons": [],
+    "source": "intro_button",
+    "sourceId": 1773131031097
+  },
+  {
+    "id": 1773131028005,
+    "keyword": "salepage, premium",
+    "response": "Respons untuk Butang Baru",
+    "attachments": [],
+    "buttons": [],
+    "source": "intro_button",
+    "sourceId": 1773131028004
   }
 ],
         products: [
   {
-    "id": 1762686842699,
-    "name": "Biolink Premium",
+    "id": 1773129498991,
+    "name": "biolink premium",
     "link": "https://shop.rakankongsi.com/",
     "description": "biolink adalah platform di mana anda boleh membina biolink anda sendiri dan gunakan domain anda sendiri.",
-    "price": "Rm39",
+    "price": "RM39",
     "imageUrl": "https://cdn.jsdelivr.net/gh/rakankongsi/hosting-image@main/biolink-premium.webp",
-    "customFields": [
-      {
-        "id": 1,
-        "key": "subdomain",
-        "label": "Pilihan Subdomain",
-        "type": "text",
-        "required": true
-      },
-      {
-        "id": 2,
-        "key": "email",
-        "label": "Alamat Emel",
-        "type": "text",
-        "required": true
-      }
-    ]
+    "customFields": []
   },
   {
-    "id": 1762686843247,
+    "id": 1773130610326,
     "name": "Salepage Premium Lifetime",
     "link": "https://shop.rakankongsi.com/",
-    "description": "dapatkan salepage lifetime anda, belajar bina salepage mudah dan percuma atau dapatkan servis dari kami sekarang!",
-    "price": "RM150",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/rakankongsi/hosting-image@main/salepage-premium.webp",
-    "customFields": [
-      {
-        "id": 1,
-        "key": "subdomain",
-        "label": "Pilihan Subdomain",
-        "type": "text",
-        "required": true
-      },
-      {
-        "id": 2,
-        "key": "email",
-        "label": "Alamat Emel",
-        "type": "text",
-        "required": true
-      }
-    ]
+    "description": "dapatkan salepage lifetime anda, belajar bina salepage mudah dan percuma sekarang!\n\nBonus prompter ai.",
+    "price": "RM69",
+    "customFields": [],
+    "imageUrl": "https://cdn.jsdelivr.net/gh/rakankongsi/hosting-image@main/salepage-premium.webp"
   },
   {
-    "id": 1762686843656,
+    "id": 1773130743032,
     "name": "Chatbot Ai",
     "link": "https://shop.rakankongsi.com/",
     "description": "chatbot ai adalah chatbot ai yang boleh belajar dari database untuk menjawab soalan customer anda.",
-    "price": "RM350",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/rakankongsi/hosting-image@main/chatbot-ai.webp",
-    "customFields": [
-      {
-        "id": 1,
-        "key": "subdomain",
-        "label": "Pilihan Subdomain",
-        "type": "text",
-        "required": true
-      },
-      {
-        "id": 2,
-        "key": "email",
-        "label": "Alamat Emel",
-        "type": "text",
-        "required": true
-      }
-    ]
+    "price": "RM150",
+    "customFields": [],
+    "imageUrl": "https://cdn.jsdelivr.net/gh/rakankongsi/hosting-image@main/chatbot-ai.webp"
   },
   {
-    "id": 1764414997286,
-    "name": "Servis Design",
-    "link": "https://shop.rakankongsi.com/",
-    "description": "🎨 Pakej 1: Design Produk / Poster Iklan Harga: RM35 sahaja Sesuai untuk: Usahawan baru, peniaga Shopee/TikTok, dan kempen FB Ads.  Jangan biarkan produk bagus anda tenggelam kerana gambar yang hambar. Dapatkan rekaan visual yang bukan sahaja cantik, tetapi menjual. Dengan harga serendah RM35, kami ubah gambar produk biasa menjadi aset pemasaran yang memukau.  Apa yang anda dapat:  ✅ High-Impact Design: Rekaan yang menonjol dalam newsfeed pelanggan.  ✅ Teks & Tipografi Menarik: Susunan ayat (headline) yang mudah dibaca dan menarik perhatian.  ✅ Format Pelbagai: Sesuai untuk Instagram (Square) atau Story (Portrait).  ✅ Siap Cepat: Serahan pantas dalam masa 24-48 jam.  \"Design yang power adalah langkah pertama untuk stop scrolling dan mula membeli.\"  |||🚀 Pakej 2: Premium Sales Page (Minisite) Harga: RM150 sahaja Sesuai untuk: Pelancaran produk, ejen/stokis, dan pengumpulan database.  Tukar pelawat menjadi pembeli dengan Sales Page yang kelihatan profesional dan meyakinkan. Lupakan design yang serabut; kami bina halaman jualan yang kemas, mobile-friendly, dan disusun khas untuk memaksimumkan kadar penukaran (conversion rate).  Kenapa perlu ambil pakej ini?  🌟 Kredibiliti Tinggi: Design premium yang membuatkan jenama anda nampak mahal dan dipercayai.  📱 Mesra Telefon Pintar: Paparan yang optimum di skrin telefon (tempat majoriti pembeli berada).  eye-Flow Jualan Teratur: Susunan gambar, testimoni, dan butang 'Beli' yang strategik.  ⚡ Ringan & Pantas: Design yang tidak membebankan loading website anda.  Nota: Harga untuk design sahaja (format imej/HTML slice mengikut persetujuan).  |||🤖 Pakej 3: AI Chatbot Pintar Harga: RM299 (Sekali Bayar) Sesuai untuk: Bisnes yang sibuk, customer service, dan automasi jualan.  Penat membalas WhatsApp soalan yang sama berulang kali? Biarkan AI Chatbot kami bekerja untuk anda 24 jam sehari tanpa henti. Menggunakan teknologi kecerdasan buatan (AI) terkini, chatbot ini bukan sekadar robot butang, tetapi mampu \"memahami\" dan melayan pelanggan dengan bahasa yang natural.  Kelebihan Utama:  🤖 Respon Pantas & Tepat: Menjawab soalan lazim (FAQ) pelanggan serta-merta.  🌙 Beroperasi 24/7: 'Close sale' walaupun anda sedang tidur atau bercuti.  🧠 Teknologi AI Pintar: Menggunakan enjin bahasa canggih untuk interaksi yang lebih 'manusia'.  📈 Jimat Kos Staff: Tidak perlu gajikan admin tambahan untuk kerja menjawab soalan asas.",
-    "price": "ikut harga di deskripsi",
-    "imageUrl": "https://cdn.jsdelivr.net/gh/rakankongsi/hosting-image@main/design-pro.webp",
-    "customFields": [
-      {
-        "id": 1,
-        "key": "subdomain",
-        "label": "Pilihan Subdomain",
-        "type": "text",
-        "required": true
-      },
-      {
-        "id": 2,
-        "key": "email",
-        "label": "Alamat Emel",
-        "type": "text",
-        "required": true
-      }
-    ]
+    "id": 1773130787450,
+    "name": "Servis Setup Salepage & chatbot",
+    "link": "https://",
+    "description": "Dapatkan servis bina salepage lifetime anda,",
+    "price": "RM250",
+    "customFields": [],
+    "imageUrl": "https://cdn.jsdelivr.net/gh/rakankongsi/hosting-image@main/design-pro.webp"
   }
 ],
         productForms: {
-  "Biolink Premium": [
-    {
-      "id": 1,
-      "key": "subdomain",
-      "label": "Pilihan Subdomain",
-      "type": "text",
-      "required": true
-    },
-    {
-      "id": 2,
-      "key": "email",
-      "label": "Alamat Emel",
-      "type": "text",
-      "required": true
-    }
-  ],
-  "biolink premium": [
-    {
-      "id": 1,
-      "key": "subdomain",
-      "label": "Pilihan Subdomain",
-      "type": "text",
-      "required": true
-    },
-    {
-      "id": 2,
-      "key": "email",
-      "label": "Alamat Emel",
-      "type": "text",
-      "required": true
-    }
-  ],
-  "Salepage Premium Lifetime": [
-    {
-      "id": 1,
-      "key": "subdomain",
-      "label": "Pilihan Subdomain",
-      "type": "text",
-      "required": true
-    },
-    {
-      "id": 2,
-      "key": "email",
-      "label": "Alamat Emel",
-      "type": "text",
-      "required": true
-    }
-  ],
-  "salepage premium lifetime": [
-    {
-      "id": 1,
-      "key": "subdomain",
-      "label": "Pilihan Subdomain",
-      "type": "text",
-      "required": true
-    },
-    {
-      "id": 2,
-      "key": "email",
-      "label": "Alamat Emel",
-      "type": "text",
-      "required": true
-    }
-  ],
-  "Chatbot Ai": [
-    {
-      "id": 1,
-      "key": "subdomain",
-      "label": "Pilihan Subdomain",
-      "type": "text",
-      "required": true
-    },
-    {
-      "id": 2,
-      "key": "email",
-      "label": "Alamat Emel",
-      "type": "text",
-      "required": true
-    }
-  ],
-  "chatbot ai": [
-    {
-      "id": 1,
-      "key": "subdomain",
-      "label": "Pilihan Subdomain",
-      "type": "text",
-      "required": true
-    },
-    {
-      "id": 2,
-      "key": "email",
-      "label": "Alamat Emel",
-      "type": "text",
-      "required": true
-    }
-  ],
-  "Servis Design": [
-    {
-      "id": 1,
-      "key": "subdomain",
-      "label": "Pilihan Subdomain",
-      "type": "text",
-      "required": true
-    },
-    {
-      "id": 2,
-      "key": "email",
-      "label": "Alamat Emel",
-      "type": "text",
-      "required": true
-    }
-  ],
-  "servis design": [
-    {
-      "id": 1,
-      "key": "subdomain",
-      "label": "Pilihan Subdomain",
-      "type": "text",
-      "required": true
-    },
-    {
-      "id": 2,
-      "key": "email",
-      "label": "Alamat Emel",
-      "type": "text",
-      "required": true
-    }
-  ]
+  "biolink premium": [],
+  "Salepage Premium Lifetime": [],
+  "salepage premium lifetime": [],
+  "Chatbot Ai": [],
+  "chatbot ai": [],
+  "Servis Setup Salepage & chatbot": [],
+  "servis setup salepage & chatbot": []
 },
         businessInfo: {
-  "waktuOperasi": "20 jam berkerja",
-  "alamat": "Area Puncak Jalil",
+  "waktuOperasi": "24 jam berkerja",
+  "alamat": "Kota Malim Prima, Tanjung Malim",
   "maklumatHubungi": "Boleh hubungi kami di 0172255040",
   "mediaSosial": "#rakankongsi",
   "infoPenghantaran": "Selalunya penghantaran akan melalui online email atau whatsapp",
   "polisiPemulangan": "Kami akan refund jika alasan anda munasabah",
-  "whatsappNumber": "",
+  "whatsappNumber": "60105280162",
   "wazeLink": "",
   "googleMapsLink": ""
 },
@@ -512,7 +324,10 @@
   "fallbackMessage": "Maaf, saya kurang jelas dengan soalan tersebut. Boleh tuan/puan berikan maklumat lanjut tentang produk yang dicari?"
 },
         typingDelay: 2500,
-        systemPrompt: "Anda adalah pembantu maya profesional untuk perniagaan ini. Tugas anda adalah menjawab soalan pelanggan dengan mesra dalam Bahasa Melayu Malaysia (Baku atau santai). Rujuk senarai produk yang diberikan untuk maklumat harga dan stok. Elakkan menggunakan perkataan Indonesia seperti 'bisa', 'kapan', atau 'toko'. Gunakan 'boleh', 'bila', dan 'kedai'. pastikan penerangan mengenai produk mempunyai elemen hook yang menarik untuk membuatkan customer terasa urgency dan ingin dapatkan secepat mungkin",
+        systemPrompt: "Anda adalah seorang chatbot yang fasih berbahasa Melayu, tak perlu menjawab salam di intro, kerana saya sudah memberi salam. berperwatakan seorang salesman yang mesra, pandai menggunakan emosi, dan tahu bagaimana untuk menarik perhatian pelanggan dengan hook yang menarik. Anda harus berbicara seperti seorang kawan, bukan seperti robot. Anda perlu menggunakan bahasa yang santai, menyentuh emosi pelanggan, dan menawarkan solusi yang tepat bagi setiap masalah yang mereka hadapi.\n\nContoh respons:\n\nMenarik perhatian: \"Hai, apa khabar? Saya tahu anda mungkin sedang mencari penyelesaian terbaik untuk [produk/servis]. Tak perlu risau, saya ada sesuatu yang boleh bantu anda!\"\n\nMenggunakan emosi: \"Pernah tak rasa frust sebab susah nak cari [produk]? Saya faham sangat perasaan tu. Tapi, apa kata kita cuba sesuatu yang boleh ubah semua tu?\"\n\nHook untuk menjual: \"Bayangkan, kalau anda boleh dapatkan [produk] dengan harga yang sangat berbaloi, dan nikmati kelebihannya tanpa rasa ragu-ragu, apa yang akan anda rasakan? Mari saya tunjukkan bagaimana!\"\n\nBercakap seperti kawan: \"Saya boleh jamin, kalau anda cuba [produk/servis], pasti akan rasa beza. Percayalah, saya dah cuba, dan ia memang berbaloi! Jadi, kenapa tak kita cuba sama-sama?\"\n\nCall-to-action: \"Jom, ambil langkah pertama untuk mulakan perubahan ini! Klik sini untuk tahu lebih lanjut, atau nak saya bantu setkan untuk anda?\"",
+        temperature: 0.7,
+        maxTokens: 1024,
+        fallbackWhatsappUrl: "",
         bubbleStyle: "doodle",
         googleAppsScriptUrl: ""
     };
@@ -535,8 +350,7 @@
         checkoutModal: document.getElementById('checkout-modal'),
         checkoutInputs: document.getElementById('checkout-inputs-container'),
         checkoutProductInput: document.getElementById('checkout_product_name'),
-        introForm: document.getElementById('variable-form'),
-        quickReplies: document.getElementById('quick-replies')
+        introForm: document.getElementById('variable-form')
     };
 
     /* === HELPER: Send to Google Sheet (Lite Mode) === */
@@ -611,7 +425,7 @@
 
         if(text === '[[FORM_TRIGGER]]') {
              const btn = document.createElement('button');
-             btn.textContent = "Mula Chat";
+             btn.textContent = "Mulakan Chat";
              btn.className = "bg-primary text-white font-bold py-2.5 px-6 shadow-lg hover:scale-105 transition-transform text-sm uppercase tracking-wide border-2 border-white/20";
              
              if(CONFIG.bubbleStyle === 'pixel') btn.style.border = '4px solid #000';
@@ -686,16 +500,22 @@
     }
 
     function setQuickReplies(buttons) {
-        dom.quickReplies.innerHTML = '';
+        const existingContainer = document.getElementById('inline-quick-replies');
+        if (existingContainer) existingContainer.remove();
+        
         if(!buttons || buttons.length === 0) return;
+        
+        const container = document.createElement('div');
+        container.id = 'inline-quick-replies';
+        container.className = 'flex flex-wrap items-start gap-2 pt-1 pb-2 z-10 self-start pl-[42px] w-full animate-fade-in';
         
         buttons.forEach(btn => {
             const el = document.createElement('button');
-            let btnClass = "flex-shrink-0 px-4 py-2 text-sm font-medium transition-all transform hover:-translate-y-0.5 shadow-md border border-white/50 text-gray-800 bg-white/90 backdrop-blur-sm hover:bg-white rounded-full whitespace-nowrap";
+            let btnClass = "px-4 py-2 text-sm font-medium transition-all transform hover:-translate-y-0.5 shadow-md border border-white/50 text-gray-800 bg-white/90 backdrop-blur-sm hover:bg-white rounded-full";
             
             if(btn.isSalepageLink) {
-                btnClass = "flex-shrink-0 px-5 py-2.5 text-sm font-bold text-white rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all animate-salepage border border-white/20 whitespace-nowrap";
-                el.style.background = "linear-gradient(45deg, #00a884, #a855f7)";
+                btnClass = "px-5 py-2.5 text-sm font-bold text-white rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all animate-salepage border border-white/20";
+                el.style.background = "linear-gradient(45deg, #7c3aed, #a855f7)";
             } else {
                 if(CONFIG.bubbleStyle === 'pixel') { btnClass = btnClass.replace('rounded-full', 'rounded-none border-2 border-black shadow-none'); }
             }
@@ -710,8 +530,10 @@
             } else {
                 el.onclick = () => handleUserInput(btn.label);
             }
-            dom.quickReplies.appendChild(el);
+            container.appendChild(el);
         });
+        
+        dom.chatBody.appendChild(container);
         scrollToBottom();
     }
 
@@ -747,7 +569,7 @@
         
         if(CONFIG.deploymentType === 'static_js') {
              if(CONFIG.enableStaticApi && CONFIG.apiKeys.length > 0 && CONFIG.apiKeys[0]) {
-                 return await callGroqDirect(input);
+                 return await callAiApi(input);
              }
              return { text: CONFIG.hybridConfig.fallbackMessage || "Maaf, saya tidak faham. Sila pilih menu.", buttons: [] };
         } else {
@@ -755,27 +577,38 @@
         }
     }
     
-    async function callGroqDirect(input) {
+    async function callAiApi(input) {
         try {
             const apiKey = CONFIG.apiKeys[0];
+            const isOpenAI = CONFIG.aiProvider === 'openai';
+            const apiUrl = isOpenAI 
+                ? "https://api.openai.com/v1/chat/completions"
+                : "https://api.groq.com/openai/v1/chat/completions";
+                
             const messages = [
-                { role: "system", content: CONFIG.systemPrompt + "\n\n[DATA USER]\n" + JSON.stringify(state.collectedVariables) + "\n\nGunakan '|||' untuk memisahkan perenggan." },
+                { role: "system", content: CONFIG.systemPrompt + "\n\n[DATA USER]\n" + JSON.stringify(state.collectedVariables) + "\n\nGunakan '|||' untuk memisahkan perenggan." + (CONFIG.fallbackWhatsappUrl ? "\n\nJika anda tidak pasti dengan jawapan atau tiada maklumat, balas dengan '[FALLBACK]'." : "") },
                 ...state.history.slice(-6),
                 { role: "user", content: input }
             ];
-            const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+            const response = await fetch(apiUrl, {
                 method: "POST",
                 headers: { "Content-Type": "application/json", "Authorization": "Bearer " + apiKey },
-                body: JSON.stringify({ messages: messages, model: CONFIG.model, temperature: 0.7, max_tokens: 1000 })
+                body: JSON.stringify({ messages: messages, model: CONFIG.model, temperature: CONFIG.temperature || 0.7, max_tokens: CONFIG.maxTokens || 1000 })
             });
             const data = await response.json();
             if(data.choices && data.choices[0]) {
                 let content = data.choices[0].message.content;
+                let buttons = [];
                 if(content.includes('[[CHECKOUT:')) {
                      const match = content.match(/\[\[CHECKOUT:\s*(.*?)\]\]/);
                      if(match) { setTimeout(() => openCheckoutModal(match[1]), 1500); content = content.replace(match[0], ''); }
                 }
-                return { text: content, buttons: [] };
+                if(CONFIG.fallbackWhatsappUrl && content.includes('[FALLBACK]')) {
+                     content = content.replace(/\[FALLBACK\]/g, '').trim();
+                     if (!content) content = "Maaf, saya kurang pasti mengenai perkara ini. Sila hubungi ejen manusia kami untuk bantuan lanjut.";
+                     buttons.push({ label: "Hubungi Ejen (WhatsApp)", url: CONFIG.fallbackWhatsappUrl });
+                }
+                return { text: content, buttons: buttons };
             }
             return { text: "Ralat sambungan AI.", buttons: [] };
         } catch(e) {
@@ -920,8 +753,10 @@
     if(state.mode === 'collecting' && CONFIG.variableCollectionStyle === 'chat') {
         addMessage('bot', CONFIG.variables[0].question);
     } else if(state.mode === 'collecting' && CONFIG.variableCollectionStyle === 'form') {
-         if(CONFIG.variableIntro) addMessage('bot', CONFIG.variableIntro);
+         const introMsg = CONFIG.variableIntro || CONFIG.welcomeMessage;
+         if(introMsg) addMessage('bot', introMsg);
          addMessage('bot', '[[FORM_TRIGGER]]');
+         // Intro buttons will be shown after form submission
     } else {
         addMessage('bot', CONFIG.welcomeMessage);
         setQuickReplies(CONFIG.introButtons);
