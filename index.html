@@ -156,9 +156,9 @@
     const CONFIG = {
         deploymentType: "static_js",
         enableStaticApi: false,
-        apiKeys: [""],
+        apiKeys: ["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"],
         aiProvider: "groq",
-        model: "llama-3.3-70b-versatile",
+        model: "openai/gpt-oss-120b",
         botName: "RK Chat",
         welcomeMessage: "Hai {{name}}! Terima kasih kerana menghubungi kami. Ada apa-apa yang boleh saya bantu mengenai produk atau tempahan anda hari ini?",
         variableCollectionStyle: "form",
@@ -201,40 +201,24 @@
 ],
         autoResponderRules: [
   {
-    "id": 1773131031627,
-    "keyword": "servis, setup, salepage",
-    "response": "Respons untuk Butang Baru",
-    "attachments": [],
-    "buttons": [],
-    "source": "intro_button",
-    "sourceId": 1773131031626
-  },
-  {
-    "id": 1773131031353,
-    "keyword": "chatbot, ai",
-    "response": "Respons untuk Butang Baru",
-    "attachments": [],
-    "buttons": [],
-    "source": "intro_button",
-    "sourceId": 1773131031352
-  },
-  {
-    "id": 1773131031098,
-    "keyword": "biolink, premium",
-    "response": "Respons untuk Butang Baru",
-    "attachments": [],
-    "buttons": [],
-    "source": "intro_button",
-    "sourceId": 1773131031097
-  },
-  {
-    "id": 1773131028005,
-    "keyword": "salepage, premium",
-    "response": "Respons untuk Butang Baru",
-    "attachments": [],
-    "buttons": [],
-    "source": "intro_button",
-    "sourceId": 1773131028004
+    "id": 1773134403635.4314,
+    "keyword": "biolink premium",
+    "response": "Eh, {{name}}! Pilihan yang mantap! 👍 Biolink premium ni memang ramai yang cari sekarang. Bayangkan semua link penting {{name}}—link WhatsApp, Shopee, website—semua ada dalam satu page yang cantik dan kemas. Senang sangat kerja, kan?\n\n|||\n\nbiolink adalah platform di mana anda boleh membina biolink anda sendiri dan gunakan domain anda sendiri.\n\n|||\n\n\n\n|||",
+    "attachments": [
+      {
+        "id": 1773134403635.6035,
+        "url": "https://cdn.jsdelivr.net/gh/rakankongsi/hosting-image@main/biolink-premium.webp"
+      }
+    ],
+    "buttons": [
+      {
+        "id": 1773134373820.0142,
+        "label": "Dapatkan biolink premium Sekarang!",
+        "url": "https://shop.rakankongsi.com/",
+        "isSalepageLink": true
+      }
+    ],
+    "source": "preview_generated"
   }
 ],
         products: [
@@ -253,8 +237,8 @@
     "link": "https://shop.rakankongsi.com/",
     "description": "dapatkan salepage lifetime anda, belajar bina salepage mudah dan percuma sekarang!\n\nBonus prompter ai.",
     "price": "RM69",
-    "customFields": [],
-    "imageUrl": "https://cdn.jsdelivr.net/gh/rakankongsi/hosting-image@main/salepage-premium.webp"
+    "imageUrl": "https://cdn.jsdelivr.net/gh/rakankongsi/hosting-image@main/salepage-premium.webp",
+    "customFields": []
   },
   {
     "id": 1773130743032,
@@ -262,8 +246,8 @@
     "link": "https://shop.rakankongsi.com/",
     "description": "chatbot ai adalah chatbot ai yang boleh belajar dari database untuk menjawab soalan customer anda.",
     "price": "RM150",
-    "customFields": [],
-    "imageUrl": "https://cdn.jsdelivr.net/gh/rakankongsi/hosting-image@main/chatbot-ai.webp"
+    "imageUrl": "https://cdn.jsdelivr.net/gh/rakankongsi/hosting-image@main/chatbot-ai.webp",
+    "customFields": []
   },
   {
     "id": 1773130787450,
@@ -271,8 +255,8 @@
     "link": "https://",
     "description": "Dapatkan servis bina salepage lifetime anda,",
     "price": "RM250",
-    "customFields": [],
-    "imageUrl": "https://cdn.jsdelivr.net/gh/rakankongsi/hosting-image@main/design-pro.webp"
+    "imageUrl": "https://cdn.jsdelivr.net/gh/rakankongsi/hosting-image@main/design-pro.webp",
+    "customFields": []
   }
 ],
         productForms: {
@@ -510,25 +494,36 @@
         container.className = 'flex flex-wrap items-start gap-2 pt-1 pb-2 z-10 self-start pl-[42px] w-full animate-fade-in';
         
         buttons.forEach(btn => {
-            const el = document.createElement('button');
-            let btnClass = "px-4 py-2 text-sm font-medium transition-all transform hover:-translate-y-0.5 shadow-md border border-white/50 text-gray-800 bg-white/90 backdrop-blur-sm hover:bg-white rounded-full";
+            const el = document.createElement(btn.url ? 'a' : 'button');
+            let baseClass = "px-4 py-2 text-sm font-medium transition-all hover:brightness-110 hover:-translate-y-0.5 bubble-base ";
+            if(CONFIG.bubbleStyle === 'pixel') baseClass += 'bubble-pixel bubble-bot-pixel';
+            else if(CONFIG.bubbleStyle === 'doodle') baseClass += 'bubble-doodle-bot';
+            else if(CONFIG.bubbleStyle === 'custom') baseClass += 'bubble-custom bubble-custom-bot';
+            else baseClass += 'bubble-std bubble-std-bot';
             
             if(btn.isSalepageLink) {
-                btnClass = "px-5 py-2.5 text-sm font-bold text-white rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all animate-salepage border border-white/20";
-                el.style.background = "linear-gradient(45deg, #7c3aed, #a855f7)";
+                baseClass += " animate-salepage border border-white/20";
+                el.style.background = "linear-gradient(45deg, #7c3aed, color-mix(in srgb, #7c3aed 70%, white))";
+                el.style.color = "white";
+                el.style.fontWeight = "800";
+                el.style.textTransform = "uppercase";
             } else {
-                if(CONFIG.bubbleStyle === 'pixel') { btnClass = btnClass.replace('rounded-full', 'rounded-none border-2 border-black shadow-none'); }
+                el.style.backgroundColor = '#ededed';
+                el.style.color = '#53035e';
             }
 
-            el.className = btnClass;
+            el.className = baseClass;
             el.textContent = btn.label;
+            el.style.textDecoration = 'none';
             
             if(btn.actionType === 'checkout') {
-                el.onclick = () => openCheckoutModal(btn.checkoutPayload || btn.label);
+                el.onclick = (e) => { e.preventDefault(); openCheckoutModal(btn.checkoutPayload || btn.label); };
             } else if(btn.url) {
-                el.onclick = () => window.open(btn.url, '_blank');
+                el.href = btn.url;
+                el.target = '_blank';
+                el.rel = 'noopener noreferrer';
             } else {
-                el.onclick = () => handleUserInput(btn.label);
+                el.onclick = (e) => { e.preventDefault(); handleUserInput(btn.label); };
             }
             container.appendChild(el);
         });
@@ -644,6 +639,14 @@
 
     async function handleUserInput(text) {
         if(!text) return;
+        
+        // Prevent user typing if form is required
+        if(state.mode === 'collecting' && CONFIG.variableCollectionStyle === 'form') {
+            dom.introModal.classList.remove('hidden');
+            dom.introModal.classList.add('flex');
+            return;
+        }
+
         removeTypingIndicator();
         addMessage('user', text);
         state.history.push({role:'user', content:text});
