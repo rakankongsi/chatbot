@@ -787,7 +787,7 @@
             const result = await processStaticRules(text);
             removeTypingIndicator();
             
-            const chunks = result.text.split('|||').filter(c => c.trim());
+            const chunks = result.text.split('|||').map(c => c.trim()).filter(Boolean);
             for(let i=0; i<chunks.length; i++) {
                 addMessage('bot', chunks[i], (i===chunks.length-1) ? result.attachments : []);
                 if(i < chunks.length-1) await new Promise(r => setTimeout(r, 400));
