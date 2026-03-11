@@ -411,7 +411,7 @@
 
     /* === HELPER: Send to Google Sheet (Lite Mode) === */
     async function sendToGoogleSheet(data) {
-        if(CONFIG.deploymentType !== 'static_js' || !CONFIG.googleAppsScriptUrl) return;
+        if(CONFIG.deploymentType === 'php_api' || !CONFIG.googleAppsScriptUrl) return;
         try {
             console.log("Sending data to sheet:", data);
             // Using no-cors to avoid CORS errors with some Apps Script deployments.
@@ -421,7 +421,7 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             });
-            console.log("Data sent to sheet (Lite Mode)");
+            console.log("Data sent to sheet");
         } catch(e) {
             console.error("Sheet Error:", e);
         }
@@ -657,7 +657,13 @@
              if(CONFIG.enableStaticApi && CONFIG.apiKeys.length > 0 && CONFIG.apiKeys[0]) {
                  return await callAiApi(input);
              }
-             return { text: CONFIG.hybridConfig.fallbackMessage || "Maaf, saya tidak faham. Sila pilih menu.", buttons: [] };
+             return { text: CONFIG.hybridConfig.fallbackMessage || "Maaf, saya tidak faham. Sila pilih menu.", buttons: CONFIG.introButtons || [] };
+        } else if (CONFIG.deploymentType === 'vercel') {
+             return await callExternalApi(input, 'api.php');
+        } else if (CONFIG.deploymentType === 'cloudflare') {
+             return await callExternalApi(input, 'worker.js'); // Assuming worker is hosted at same origin or user replaces this
+        } else if (CONFIG.deploymentType === 'gas') {
+             return await callExternalApi(input, CONFIG.googleAppsScriptUrl);
         } else {
              return await callPhpApi(input);
         }
@@ -703,13 +709,17 @@
     }
     
     async function callPhpApi(input) {
+        return await callExternalApi(input, 'api.php');
+    }
+
+    async function callExternalApi(input, endpoint) {
         try {
             const payload = {
                 action: 'chat',
                 messages: [...state.history.slice(-10), { role: 'user', content: input }],
                 collectedVariables: state.collectedVariables
             };
-            const res = await fetch('api.php', {
+            const res = await fetch(endpoint, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
